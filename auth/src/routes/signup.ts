@@ -34,7 +34,7 @@ router.post(
         id: user.id,
         email: user.email,
       },
-      "tempSecretKey"
+      process.env.JWT_KEY! // ! to ignore error as we have already checked JWT_KEY is defined in index.ts
     );
     // Store it on session obj for cookie-session
     req.session = {
