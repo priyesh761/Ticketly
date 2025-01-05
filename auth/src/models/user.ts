@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import { Password } from "../services/password";
+
+import { PasswordManager } from "../services/password-manager";
 
 // An interface that describes the properties that are
 // required to create a new user
@@ -21,23 +22,35 @@ interface UserDoc extends mongoose.Document {
   password: string;
 }
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.password;
+      },
+      versionKey: false,
+    },
+  }
+);
 
 // Use function instead of arrow function for callback as we need
 // `this` to be in context of UserSchema to get access of document
 // we are saving.
 userSchema.pre("save", async function (done) {
   if (this.isModified("password")) {
-    const hashedPassword = await Password.toHash(this.get("password"));
+    const hashedPassword = await PasswordManager.toHash(this.get("password"));
     this.set("password", hashedPassword);
   }
   done();
