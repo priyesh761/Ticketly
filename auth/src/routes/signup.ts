@@ -12,7 +12,10 @@ router.post(
   "/api/users/signup",
   [
     body("email").isEmail().withMessage("Email must be valid"),
-    body("password").trim().isLength({ min: 5, max: 10 }).withMessage("Password must be between 5 and 10 characters"),
+    body("password")
+      .trim()
+      .isLength({ min: 5, max: 10 })
+      .withMessage("Password must be between 5 and 10 characters"),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
