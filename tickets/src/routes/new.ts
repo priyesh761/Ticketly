@@ -2,6 +2,8 @@ import { requireAuth, validateRequest } from "@ticketly/common";
 import { Request, Response, Router } from "express";
 import { body } from "express-validator";
 import { Ticket } from "../models/ticket";
+import { TicketCreatedPublisher } from "../events/publishers/ticket-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = Router();
 
@@ -24,6 +26,12 @@ router.post(
     });
     await newticket.save();
 
+    new TicketCreatedPublisher(natsWrapper.client).publish({
+      id: newticket.id,
+      title: newticket.title,
+      price: newticket.price,
+      userId: newticket.userId,
+    });
     res.status(201).send(newticket);
   }
 );
