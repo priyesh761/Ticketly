@@ -2,6 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 import { getMockAuthCookie } from "../../test/helper/getMockAuthCookie";
 import { Ticket } from "../../models/ticket";
+import { natsWrapper } from "../../nats-wrapper";
 
 const CREATE_TICKET_URL = "/api/tickets";
 
@@ -65,4 +66,17 @@ it("create a ticket with valid inputs", async () => {
   const [{ title, price }] = ticketsAfterRequest;
   expect(title).toEqual("test");
   expect(price).toEqual(5);
+});
+
+it("Publishes an event", async () => {
+  // Add in a check to make sure a ticket was saved
+  const tickets = await Ticket.find({});
+  expect(tickets.length).toEqual(0);
+
+  await request(app)
+    .post(CREATE_TICKET_URL)
+    .set("Cookie", [getMockAuthCookie()])
+    .send({ title: "test", price: 5 })
+    .expect(201);
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });

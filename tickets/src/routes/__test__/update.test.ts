@@ -2,6 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 import { getMockId } from "../../test/helper/getMockID";
 import { getMockAuthCookie } from "../../test/helper/getMockAuthCookie";
+import { natsWrapper } from "../../nats-wrapper";
 
 const UPDATE_TICKET_URL = "/api/tickets";
 const mockTicket = { title: "test", price: "123" };
@@ -81,4 +82,22 @@ it("updates the ticket provided valid inputs", async () => {
 
   expect(updatedResponse.body.title).toEqual(updatedTicket.title);
   expect(updatedResponse.body.price).toEqual(updatedTicket.price);
+});
+
+it("publishes an event", async () => {
+  const authToken = getMockAuthCookie();
+  const response = await request(app)
+    .post("/api/tickets")
+    .set("Cookie", [authToken])
+    .send(mockTicket)
+    .expect(201);
+
+  const updatedTicket = { title: "Test2", price: 45 };
+  await request(app)
+    .put(`${UPDATE_TICKET_URL}/${response.body.id}`)
+    .set("Cookie", [authToken])
+    .send(updatedTicket)
+    .expect(200);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
