@@ -19,7 +19,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@ticketly/common": "^1.0.3",
+    "@ticketly/common": "^1.0.4",
     "@types/cookie-session": "^2.0.49",
     "@types/express": "^5.0.0",
     "cookie-session": "^2.1.0",
@@ -40,3 +40,4 @@
     "ts-jest": "^29.2.5"
   }
 }
+
