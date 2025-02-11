@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { getMockAuthCookie } from "../../test/helper/getMockAuthCookie";
 import { Ticket } from "../../models/ticket";
 import { Order, OrderStatus } from "../../models/order";
+import { natsWrapper } from "../../nats-wrapper";
 
 const NEW_ORDER_URL = "/api/orders";
 
@@ -38,7 +39,7 @@ it("reserves a ticket", async () => {
   const ticket = Ticket.build({ title: "Concert", price: 20 });
   await ticket.save();
 
-  const response = await request(app)
+  await request(app)
     .post(NEW_ORDER_URL)
     .set("Cookie", [getMockAuthCookie()])
     .send({ ticketId: ticket.id })
@@ -50,4 +51,14 @@ it("reserves a ticket", async () => {
   expect(actualTicket.id).toEqual(ticket.id);
 });
 
-it.todo("emits an order created event");
+it("emits an order created event", async () => {
+  const ticket = Ticket.build({ title: "Concert", price: 20 });
+  await ticket.save();
+
+  await request(app)
+    .post(NEW_ORDER_URL)
+    .set("Cookie", [getMockAuthCookie()])
+    .send({ ticketId: ticket.id })
+    .expect(201);
+  expect(natsWrapper.client.publish).toHaveBeenCalledTimes(1);
+});
