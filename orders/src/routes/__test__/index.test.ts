@@ -2,20 +2,22 @@ import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
 import { getMockAuthCookie } from "../../test/helper/getMockAuthCookie";
+import { getMockId } from "../../test/helper/getMockID";
 
 const INDEX_URL = "/api/orders";
+const TICKET = { title: "Concert", price: 15 };
 
-const buildTicket = async () => {
-  const ticket = Ticket.build({ title: "Concert", price: 15 });
+const buildTicket = async (id: string) => {
+  const ticket = Ticket.build({ ...TICKET, id });
   await ticket.save();
 
   return ticket;
 };
 
 it("fetches order for a particular user", async () => {
-  const ticket1 = await buildTicket();
-  const ticket2 = await buildTicket();
-  const ticket3 = await buildTicket();
+  const ticket1 = await buildTicket(getMockId());
+  const ticket2 = await buildTicket(getMockId());
+  const ticket3 = await buildTicket(getMockId());
 
   const user1 = getMockAuthCookie();
   const user2 = getMockAuthCookie();

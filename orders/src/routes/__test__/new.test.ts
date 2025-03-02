@@ -5,8 +5,10 @@ import { getMockAuthCookie } from "../../test/helper/getMockAuthCookie";
 import { Ticket } from "../../models/ticket";
 import { Order, OrderStatus } from "../../models/order";
 import { natsWrapper } from "../../nats-wrapper";
+import { getMockId } from "../../test/helper/getMockID";
 
 const NEW_ORDER_URL = "/api/orders";
+const TICKET = { id: getMockId(), title: "Concert", price: 15 };
 
 it("returns an error if ticket does not exists", () => {
   const ticketId = new mongoose.Types.ObjectId();
@@ -18,7 +20,7 @@ it("returns an error if ticket does not exists", () => {
 });
 
 it("returns an error if ticket is already reserved", async () => {
-  const ticket = Ticket.build({ title: "Concert", price: 10 });
+  const ticket = Ticket.build(TICKET);
   await ticket.save();
   const order = Order.build({
     ticket,
@@ -36,7 +38,7 @@ it("returns an error if ticket is already reserved", async () => {
 });
 
 it("reserves a ticket", async () => {
-  const ticket = Ticket.build({ title: "Concert", price: 20 });
+  const ticket = Ticket.build(TICKET);
   await ticket.save();
 
   await request(app)
@@ -52,7 +54,7 @@ it("reserves a ticket", async () => {
 });
 
 it("emits an order created event", async () => {
-  const ticket = Ticket.build({ title: "Concert", price: 20 });
+  const ticket = Ticket.build(TICKET);
   await ticket.save();
 
   await request(app)

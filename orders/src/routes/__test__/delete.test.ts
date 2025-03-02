@@ -5,12 +5,14 @@ import { getMockAuthCookie } from "../../test/helper/getMockAuthCookie";
 import { OrderStatus } from "@ticketly/common";
 import { Order } from "../../models/order";
 import { natsWrapper } from "../../nats-wrapper";
+import { getMockId } from "../../test/helper/getMockID";
 
 const URL = "/api/orders";
+const TICKET = { id: getMockId(), title: "Concert", price: 15 };
 
 it("Marks an order as cancelled", async () => {
   // Setup
-  const ticket = Ticket.build({ title: "Concert", price: 15 });
+  const ticket = Ticket.build(TICKET);
   await ticket.save();
 
   const user = getMockAuthCookie();
@@ -33,7 +35,7 @@ it("Marks an order as cancelled", async () => {
 
 it("Emits a order cancelled event", async () => {
   // Setup
-  const ticket = Ticket.build({ title: "Concert", price: 15 });
+  const ticket = Ticket.build(TICKET);
   await ticket.save();
 
   const user = getMockAuthCookie();

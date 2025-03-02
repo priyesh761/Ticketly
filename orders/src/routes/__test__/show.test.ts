@@ -2,12 +2,14 @@ import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
 import { getMockAuthCookie } from "../../test/helper/getMockAuthCookie";
+import { getMockId } from "../../test/helper/getMockID";
 
 const URL = "/api/orders";
+const TICKET = { id: getMockId(), title: "Concert", price: 15 };
 
 it("fetches the order", async () => {
   // Setup
-  const ticket = Ticket.build({ title: "Concert", price: 15 });
+  const ticket = Ticket.build(TICKET);
   await ticket.save();
 
   const user = getMockAuthCookie();
@@ -29,7 +31,7 @@ it("fetches the order", async () => {
 
 it("Returns an error if order does not belong to user", async () => {
   // Setup
-  const ticket = Ticket.build({ title: "Concert", price: 15 });
+  const ticket = Ticket.build(TICKET);
   await ticket.save();
 
   const { body: order } = await request(app)
