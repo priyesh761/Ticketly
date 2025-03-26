@@ -5,7 +5,7 @@ import { Ticket } from "../../models/ticket";
 
 export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
   readonly subject = Subjects.TicketUpdated;
-  queueGroupName = QUEUE_GROUP_NAME;
+  readonly queueGroupName = QUEUE_GROUP_NAME;
 
   async onMessage(data: TicketUpdatedEvent["data"], msg: Message) {
     const ticket = await Ticket.findByEvent(data);
