@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  tickets-depl
+  name: tickets-depl
 spec:
   replicas: 1
   selector:
@@ -10,11 +10,11 @@ spec:
   template:
     metadata:
       labels:
-        app:  tickets
+        app: tickets
     spec:
       containers:
-        - name:  tickets
-          image:  ps761/tickets
+        - name: tickets
+          image: ps761/tickets
           env:
             - name: MONGO_URI
               value: mongodb://tickets-mongo-srv:27017/tickets
