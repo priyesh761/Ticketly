@@ -1,10 +1,10 @@
 import JWT from "jsonwebtoken";
 import { getMockId } from "./getMockID";
 
-export const getMockAuthCookie = () => {
+export const getMockAuthCookie = (id?: string) => {
   // Build a JWT payload
   const payload = {
-    id: getMockId(),
+    id: id ?? getMockId(),
     email: "test@test.com",
   };
 
