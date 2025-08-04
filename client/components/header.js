@@ -4,12 +4,14 @@ export default ({ currentUser }) => {
   const links = [
     !currentUser && { label: "Sign Up", href: "/auth/signup" },
     !currentUser && { label: "Sign in", href: "/auth/signin" },
+    currentUser && { label: "My Orders", href: "/orders" },
+    currentUser && { label: "Sell Tickets", href: "/tickets/new" },
     currentUser && { label: "Sign Out", href: "/auth/signout" },
   ]
     .filter(Boolean)
     .map(({ label, href }) => (
       <li key={href}>
-        <Link href={href} className="nav0link">
+        <Link href={href} className="nav-link">
           {label}
         </Link>
       </li>

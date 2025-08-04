@@ -5,4 +5,5 @@ COPY package.json .
 RUN npm install
 COPY . .
 
-CMD [ "npm", "run", "dev"]
+# Use custom CMD that runs env check first
+CMD ["sh", "-c", "node check-env.js && npm run dev"]

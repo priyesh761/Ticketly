@@ -15,6 +15,12 @@ spec:
       containers:
         - name: client
           image: ps761/client
+          env:
+            - name: STRIPE_PUBLIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-key
+                  key: STRIPE_PUBLIC_KEY
 ---
 apiVersion: v1
 kind: Service
