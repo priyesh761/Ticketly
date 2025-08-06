@@ -5,6 +5,7 @@
   "scripts": {
     "start": "ts-node-dev --poll src/index.ts",
     "test": "jest --watchAll --no-cache --detectOpenHandles",
+    "test:ci": "jest",
     "docker-build": "docker build -t ps761/auth .",
     "skaffold-build": "skaffold dev"
   },
