@@ -6,6 +6,7 @@ const start = async () => {
     throw new Error("ENV variables must be defined");
   }
   try {
+    console.log("Test Git Hub Action...");
     console.log("Connecting DB...");
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to MongoDB [auth]");
