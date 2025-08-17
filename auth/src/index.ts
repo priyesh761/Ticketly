@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { app } from "./app";
 
 const start = async () => {
+  console.log("Test Git Hub Action...");
   if (!process.env.JWT_KEY || !process.env.MONGO_URI) {
     throw new Error("ENV variables must be defined");
   }
