@@ -15,6 +15,7 @@ const KEYS = [
 ];
 
 const start = async () => {
+  console.log("Test Git Hub Action....");
   if (!KEYS.every((key) => process.env[key])) {
     throw new Error("ENV variables must be defined");
   }
