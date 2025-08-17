@@ -1,0 +1,13 @@
+name: "Run Tickets Service Tests"
+
+on:
+  pull_request:
+    paths:
+      - 'tickets/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cd tickets && npm i && npm run test:ci
