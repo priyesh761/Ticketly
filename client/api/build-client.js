@@ -4,8 +4,7 @@ export default ({ req }) => {
   if (typeof window == "undefined") {
     // On Server
     return axios.create({
-      baseURL:
-        "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
+      baseURL: "http://www.ticketly.priyesh-shetty.dev/",
       headers: req.headers,
     });
   } else {
