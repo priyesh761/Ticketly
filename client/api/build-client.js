@@ -5,7 +5,7 @@ export default ({ req }) => {
     // On Server
     return axios.create({
       baseURL:
-        "http://www.ticketly.priyesh-shetty.dev",
+        "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
       headers: req.headers,
     });
   } else {
